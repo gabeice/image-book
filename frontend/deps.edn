@@ -1,0 +1,17 @@
+{:paths     ["src" "script" "target"]
+ :deps
+            {org.clojure/clojure               #:mvn{:version "1.9.0"}
+             org.clojure/clojurescript         #:mvn{:version "1.10.339"}
+             org.clojure/core.async            #:mvn{:version "0.2.374"}
+             re-frame                          #:mvn{:version "0.10.5"}
+             day8.re-frame/http-fx             #:mvn{:version "0.1.4"}
+             http-kit                          #:mvn{:version "2.3.0"}
+             cljs-ajax                         {:mvn/version "0.7.3"
+                                                :exclusions  [com.fasterxml.jackson.core/jackson-core]}}
+ :aliases
+            {:dev {:extra-deps {com.bhauman/rebel-readline-cljs {:mvn/version "0.1.4"}
+                                binaryage/devtools              {:mvn/version "0.9.10"}
+                                com.bhauman/figwheel-main {:git/url "https://github.com/bhauman/figwheel-main.git"
+                                                           :sha "50853cfab10efd4e738ecc26c082c8ba407b18c5"}}}
+
+             :figwheel {:main-opts ["script/build.clj" "figwheel"]}}}
