@@ -12,8 +12,8 @@ pom.xml.asc
 /*.log
 /*-init.clj
 frontend/resources/public/js/compiled
-/*.idea/
-/*.cpcache/
+*.idea/
+*.cpcache/
 frontend/out
 frontend/.rebel_readline_history
 /*.iml

@@ -31,7 +31,7 @@
 
 (defn start-websocket []
   (defonce channel-socket
-    (sente/make-channel-socket! http-kit/sente-web-server-adapter {})))
+    (sente/make-channel-socket! (http-kit/get-sch-adapter) {})))
 
 (defmulti event :id)
 

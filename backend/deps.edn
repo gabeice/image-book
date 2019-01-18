@@ -1,7 +1,6 @@
 {:paths     ["src" "script" "target"]
  :deps
             {org.clojure/clojure               #:mvn{:version "1.9.0"}
-             org.clojure/core.memoize          #:mvn{:version "0.5.8"}
              com.datomic/client-pro            #:mvn{:version "0.8.28"}
              amazonica                         #:mvn{:version "0.3.139"}
              com.taoensso/sente                #:mvn{:version "1.11.0"}
