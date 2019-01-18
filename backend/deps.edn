@@ -3,7 +3,7 @@
             {org.clojure/clojure               #:mvn{:version "1.9.0"}
              org.clojure/core.memoize          #:mvn{:version "0.5.8"}
              com.datomic/client-pro            #:mvn{:version "0.8.28"}
-             com.taoensso/sente                #:mvn{:version "1.8.1"}
+             com.taoensso/sente                #:mvn{:version "1.11.0"}
              http-kit                          #:mvn{:version "2.3.0"}
              compojure                         #:mvn{:version "1.5.0"}
              environ                           #:mvn{:version "1.0.2"}

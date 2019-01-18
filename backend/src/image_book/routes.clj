@@ -12,20 +12,17 @@
     [compojure.route :as route]))
 
 (declare channel-socket)
-(declare router)
-
-(defn- generate-uid []
-  (.toString (java.util.UUID/randomUUID)))
 
 (defroutes routes
-  (GET "/" _ (response/content-type {} "application/json"))
+  (GET "/" _ (response/content-type "{}" "application/json"))
+  (GET "/status" _ (str "Running: " (pr-str @(:connected-uids channel-socket))))
   (GET "/chsk" req ((:ajax-get-or-ws-handshake-fn channel-socket) req))
   (POST "/chsk" req ((:ajax-post-fn channel-socket) req))
   (route/resources "/")
   (route/not-found "Not found"))
 
 (def handler
-  (-> #'routes
+  (-> routes
       (cond-> (environ/env :dev?) (reload/wrap-reload))
       (defaults/wrap-defaults (assoc-in defaults/site-defaults [:security :anti-forgery] false))
       (cors/wrap-cors :access-control-allow-origin [#".*"]
@@ -34,9 +31,7 @@
 
 (defn start-websocket []
   (defonce channel-socket
-    (sente/make-channel-socket!
-      http-kit/sente-web-server-adapter
-      {:user-id-fn #'generate-uid})))
+    (sente/make-channel-socket! http-kit/sente-web-server-adapter {})))
 
 (defmulti event :id)
 

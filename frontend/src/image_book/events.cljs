@@ -9,6 +9,11 @@
  (fn [_ _]
    db/default-db))
 
+(reg-event-db
+  ::display-image
+  (fn [db [_ image-id]]
+    (assoc db :displayed-image image-id)))
+
 (reg-event-fx
   ::upload-photo
   (fn [cofx [_ image-file]]

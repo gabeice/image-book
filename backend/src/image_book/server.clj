@@ -9,6 +9,6 @@
   (println "Server starting...")
   (routes/start-websocket)
   (routes/start-router)
-  (server/run-server #'routes/handler
+  (server/run-server routes/handler
                      {:port (or (some-> (first args) (Integer/parseInt))
                                 (environ/env :http-port 3000))}))

@@ -1,16 +1,19 @@
 (ns image-book.views
   (:require
-   [re-frame.core :refer [subscribe]]
-   [image-book.subs :as subs]))
+   [re-frame.core :refer [subscribe dispatch]]
+   [image-book.subs :as subs]
+   [image-book.events :as events]))
 
 (defn upload-box []
   [:div#upload-box
    [:input {:type "file"} "Drag image here"]])
 
 (defn image-viewer []
-  (let [displayed-image (subscribe [::subs/displayed-image])]
+  (let [displayed-image @(subscribe [::subs/displayed-image])]
     [:div#image-viewer
-     [:img {:href (:url displayed-image)}]]))
+     (when displayed-image
+       [:img {:href (:url displayed-image)
+              :on-click (dispatch [::events/display-image (:id displayed-image)])}])]))
 
 (defn image-thumbnail [image]
   [:img {:href (:url image)}])

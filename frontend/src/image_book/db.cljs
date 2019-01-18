@@ -2,5 +2,5 @@
   (:require [image-book.websockets :as ws]))
 
 (def default-db
-  {:all-images (ws/fetch-photos)
+  {:all-images []
    :uploaded-photos []})

@@ -36,7 +36,7 @@
 
 (defmethod task "figwheel" [_]
   (with-namespaces [figwheel.main.api]
-                   (figwheel.main.api/start {:watch-dirs ["src" "test"]}
+                   (figwheel.main.api/start {:watch-dirs ["src"]}
                                             {:id      "dev"
                                              :options {:main                 'image-book.core
                                                        :output-to            "resources/public/js/compiled/app.js"
