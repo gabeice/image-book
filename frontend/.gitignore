@@ -1,9 +1,0 @@
-/*.log
-/*-init.clj
-/resources/public/js/compiled
-.idea/
-.cpcache/
-out
-.rebel_readline_history
-.lein-failures
-image-book.iml
