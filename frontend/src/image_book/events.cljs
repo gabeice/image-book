@@ -14,6 +14,16 @@
   (fn [db [_ image-id]]
     (assoc db :displayed-image image-id)))
 
+(reg-event-db
+  ::upload-view
+  (fn [db _]
+    (assoc db :upload-view? true)))
+
+(reg-event-db
+  ::main-view
+  (fn [db _]
+    (assoc db :upload-view? false)))
+
 (reg-event-fx
   ::upload-photo
   (fn [cofx [_ image-file]]

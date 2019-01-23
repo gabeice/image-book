@@ -16,7 +16,7 @@
                    {:db/ident :photo/url
                     :db/valueType :db.type/string
                     :db/cardinality :db.cardinality/one
-                    :db/doc "The url for the photo"}])
+                    :db/doc "The s3 url for the photo"}])
 
 (defn all-photos []
   (let [db (d/db conn)
