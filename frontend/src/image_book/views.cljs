@@ -5,36 +5,42 @@
    [image-book.events :as events]))
 
 (defn upload-box []
-  [:div#upload-box
-   [:div#box-input
-    [:input#file.box-file {:type "file"
-                           :on-change #(dispatch [::events/upload-photo (-> % .-target .-files first)])}]
-    [:label {:for "file"}
-     [:strong "Choose a file"]
-     [:span " or drag it here"]]]
-   [:p {:on-click #(dispatch [::events/main-view])} "close"]])
+  (let [uploading? (subscribe [::subs/uploading?])]
+    [:div#upload-box.flex-column
+     (if @uploading?
+         [:div#box-uploading
+          [:p "Uploading..."]]
+         [:div#box-input
+          [:input#file.box-file {:type "file"
+                                 :on-drop #(dispatch [::events/upload-photo (-> % .-target .-files first)])}]
+          [:label {:for "file"}
+           [:strong.event-link "Choose a file"]
+           [:span " or drag it here"]]])
+     [:p.event-link {:on-click #(dispatch [::events/main-view])} "close"]]))
 
 (defn image-viewer []
   (let [displayed-image @(subscribe [::subs/displayed-image])]
-    [:div#image-viewer
+    [:div#image-viewer.flex-column
      (when displayed-image
-       [:img {:href (:url displayed-image)
-              :on-click #(dispatch [::events/display-image (:id displayed-image)])}])
-     [:p {:on-click #(dispatch [::events/upload-view])} "Upload an image"]]))
+       [:div#main-image
+        [:img {:src (:url displayed-image)}]])
+     [:p.event-link {:on-click #(dispatch [::events/upload-view])} "Upload an image"]]))
 
 (defn image-thumbnail [image]
-  [:img {:href (:url image)}])
+  [:div.thumbnail {:key (:id image)}
+   [:img.event-link {:src (:url image)
+                     :on-click #(dispatch [::events/display-image image])}]])
 
 (defn image-gallery []
   (let [uploaded-images (subscribe [::subs/all-images])]
     [:div#gallery
      (for [image @uploaded-images]
-       [image-thumbnail image])]))
+       (image-thumbnail image))]))
 
 (defn main-panel []
   (let [upload-view? (subscribe [::subs/upload-view?])]
-    [:div#main-panel
-     [:h1 "Le livre d'image"]
+    [:div#main-panel.flex-column
+     [:h1 "The Image Book"]
      (if @upload-view?
          [upload-box]
          [image-viewer])

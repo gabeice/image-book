@@ -2,9 +2,52 @@ body {
     font-family: futura;
 }
 
-#main-panel {
+.flex-column {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+#upload-box {
+    height: 400px;
+    width: 300px;
+    background: whitesmoke;
+}
+
+.box-file {
+    display: none;
+}
+
+.event-link {
+    cursor: pointer;
+}
+
+#main-image {
+    width: 500px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+}
+
+.thumbnail {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+}
+
+img {
+    max-height: 100%;
+    max-width: 100%;
+    display: block;
+    margin: auto;
+}
+
+#gallery {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }

@@ -5,7 +5,8 @@
 (reg-sub
   ::displayed-image
   (fn [db]
-    (:displayed-image db)))
+    (or (:displayed-image db)
+        (first (:all-images db)))))
 
 (reg-sub
   ::all-images
@@ -16,3 +17,8 @@
  ::upload-view?
  (fn [db]
    (:upload-view? db)))
+
+(reg-sub
+  ::uploading?
+  (fn [db]
+    (:uploading? db)))

@@ -11,8 +11,8 @@
 
 (reg-event-db
   ::display-image
-  (fn [db [_ image-id]]
-    (assoc db :displayed-image image-id)))
+  (fn [db [_ image]]
+    (assoc db :displayed-image image)))
 
 (reg-event-db
   ::upload-view
@@ -27,7 +27,9 @@
 (reg-event-fx
   ::upload-photo
   (fn [cofx [_ image-file]]
-    (update cofx :uploaded-photos conj image-file)))
+    (-> cofx
+        (update :uploaded-photos conj image-file)
+        (assoc-in :db [:uploading? true]))))
 
 (reg-fx
   ::uploaded-photos
