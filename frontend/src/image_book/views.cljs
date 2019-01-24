@@ -5,14 +5,25 @@
    [image-book.events :as events]))
 
 (defn upload-box []
-  (let [uploading? (subscribe [::subs/uploading?])]
-    [:div#upload-box.flex-column
+  (let [uploading? (subscribe [::subs/uploading?])
+        stop-dammit (fn [e]
+                      (.preventDefault e)
+                      (.stopPropagation e))
+        upload-event (fn [e]
+                       (.preventDefault e)
+                       (.stopPropagation e)
+                       (dispatch [::events/upload-photo (-> e .-dataTransfer .-files (.item 0))]))]
+    [:div#upload-box.flex-column {:on-drop upload-event
+                                  :on-drag stop-dammit
+                                  :on-drag-enter stop-dammit
+                                  :on-drag-leave stop-dammit
+                                  :on-drag-over stop-dammit
+                                  :on-drag-start stop-dammit}
      (if @uploading?
          [:div#box-uploading
           [:p "Uploading..."]]
          [:div#box-input
-          [:input#file.box-file {:type "file"
-                                 :on-drop #(dispatch [::events/upload-photo (-> % .-target .-files first)])}]
+          [:input#file.box-file {:type "file"}]
           [:label {:for "file"}
            [:strong.event-link "Choose a file"]
            [:span " or drag it here"]]])

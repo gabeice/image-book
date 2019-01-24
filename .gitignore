@@ -17,3 +17,4 @@ frontend/resources/public/js/compiled
 frontend/out
 frontend/.rebel_readline_history
 /*.iml
+backend/config.edn
