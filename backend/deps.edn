@@ -1,4 +1,4 @@
-{:paths     ["src" "script" "target"]
+{:paths     ["src" "config" "target"]
  :deps
             {org.clojure/clojure               #:mvn{:version "1.9.0"}
              com.datomic/client-pro            #:mvn{:version "0.8.28"}

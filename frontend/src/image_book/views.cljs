@@ -4,21 +4,18 @@
    [image-book.subs :as subs]
    [image-book.events :as events]))
 
+(defn- neutralize-drag []
+  (let [stop-drag-defaults (fn [e] (.preventDefault e) (.stopPropagation e))]
+    {:on-drag       stop-drag-defaults
+     :on-drag-enter stop-drag-defaults
+     :on-drag-leave stop-drag-defaults
+     :on-drag-over  stop-drag-defaults
+     :on-drag-start stop-drag-defaults}))
+
 (defn upload-box []
   (let [uploading? (subscribe [::subs/uploading?])
-        stop-dammit (fn [e]
-                      (.preventDefault e)
-                      (.stopPropagation e))
-        upload-event (fn [e]
-                       (.preventDefault e)
-                       (.stopPropagation e)
-                       (dispatch [::events/upload-photo (-> e .-dataTransfer .-files (.item 0))]))]
-    [:div#upload-box.flex-column {:on-drop upload-event
-                                  :on-drag stop-dammit
-                                  :on-drag-enter stop-dammit
-                                  :on-drag-leave stop-dammit
-                                  :on-drag-over stop-dammit
-                                  :on-drag-start stop-dammit}
+        upload-fn #(dispatch [::events/upload-photo (-> % .-dataTransfer .-files (.item 0))])]
+    [:div#upload-box.flex-column (merge neutralize-drag {:on-drop upload-fn})
      (if @uploading?
          [:div#box-uploading
           [:p "Uploading..."]]
@@ -36,6 +33,9 @@
        [:div#main-image
         [:img {:src (:url displayed-image)}]])
      [:p.event-link {:on-click #(dispatch [::events/upload-view])} "Upload an image"]]))
+
+(defn dividing-line []
+  [:div#dividing-line])
 
 (defn image-thumbnail [image]
   [:div.thumbnail {:key (:id image)}
@@ -55,4 +55,5 @@
      (if @upload-view?
          [upload-box]
          [image-viewer])
+     [dividing-line]
      [image-gallery]]))

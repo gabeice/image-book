@@ -45,6 +45,11 @@ img {
     margin: auto;
 }
 
+#dividing-line {
+    width: 50%;
+    height: 1px;
+}
+
 #gallery {
     width: 100%;
     display: flex;
