@@ -48,6 +48,7 @@ img {
 #dividing-line {
     width: 50%;
     height: 1px;
+    background: black;
 }
 
 #gallery {

@@ -46,7 +46,7 @@
 
 (defmethod event :chsk/ws-ping [_])
 
-(defmethod event :image-book/fetch-photos []
+(defmethod event :image-book/fetch-photos [_]
   (db/all-photos))
 
 (defmethod event :image-book/upload-photo [image-file]

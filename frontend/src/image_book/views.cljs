@@ -4,18 +4,19 @@
    [image-book.subs :as subs]
    [image-book.events :as events]))
 
-(defn- neutralize-drag []
-  (let [stop-drag-defaults (fn [e] (.preventDefault e) (.stopPropagation e))]
-    {:on-drag       stop-drag-defaults
-     :on-drag-enter stop-drag-defaults
-     :on-drag-leave stop-drag-defaults
-     :on-drag-over  stop-drag-defaults
-     :on-drag-start stop-drag-defaults}))
-
 (defn upload-box []
   (let [uploading? (subscribe [::subs/uploading?])
-        upload-fn #(dispatch [::events/upload-photo (-> % .-dataTransfer .-files (.item 0))])]
-    [:div#upload-box.flex-column (merge neutralize-drag {:on-drop upload-fn})
+        stop-drag-defaults (fn [e] (.preventDefault e) (.stopPropagation e))
+        upload-fn (fn [e]
+                    (.preventDefault e)
+                    (.stopPropagation e)
+                    (dispatch [::events/upload-photo (-> e .-dataTransfer .-files (.item 0))]))]
+    [:div#upload-box.flex-column {:on-drop       upload-fn
+                                  :on-drag       stop-drag-defaults
+                                  :on-drag-enter stop-drag-defaults
+                                  :on-drag-leave stop-drag-defaults
+                                  :on-drag-over  stop-drag-defaults
+                                  :on-drag-start stop-drag-defaults}
      (if @uploading?
          [:div#box-uploading
           [:p "Uploading..."]]

@@ -4,11 +4,10 @@
    [image-book.db :as db]
    [image-book.websockets :as ws]))
 
-(reg-event-fx
+(reg-event-db
  ::initialize-db
  (fn [_ _]
-   {:db db/default-db
-    :reload? true}))
+   db/default-db))
 
 (reg-event-db
   ::display-image
@@ -29,16 +28,13 @@
   ::upload-photo
   (fn [cofx [_ image-file]]
     (-> cofx
-        (update :uploaded-photos conj image-file)
-        (assoc-in [:db :uploading?] true))))
+        (update :uploaded-photos conj {:file image-file
+                                       :title (.-name image-file)
+                                       :size (.-size image-file)})
+        (assoc-in [:db :uploading?] image-file))))
 
 (reg-fx
   :uploaded-photos
   (fn [photos]
     (doseq [photo photos]
       (ws/upload-photo photo))))
-
-(reg-fx
-  :reload?
-  (fn [_]
-    (ws/fetch-photos)))
