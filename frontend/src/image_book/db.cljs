@@ -1,5 +1,4 @@
-(ns image-book.db
-  (:require [image-book.websockets :as ws]))
+(ns image-book.db)
 
 (def default-db
   {:all-images [{:id 1

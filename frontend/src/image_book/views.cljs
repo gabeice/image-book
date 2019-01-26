@@ -7,11 +7,11 @@
 (defn upload-box []
   (let [uploading? (subscribe [::subs/uploading?])
         stop-drag-defaults (fn [e] (.preventDefault e) (.stopPropagation e))
-        upload-fn (fn [e]
-                    (.preventDefault e)
-                    (.stopPropagation e)
-                    (dispatch [::events/upload-photo (-> e .-dataTransfer .-files (.item 0))]))]
-    [:div#upload-box.flex-column {:on-drop       upload-fn
+        upload-file (fn [e]
+                      (.preventDefault e)
+                      (.stopPropagation e)
+                      #(dispatch [::events/upload-photo (-> e .-dataTransfer .-files (.item 0))]))]
+    [:div#upload-box.flex-column {:on-drop       upload-file
                                   :on-drag       stop-drag-defaults
                                   :on-drag-enter stop-drag-defaults
                                   :on-drag-leave stop-drag-defaults

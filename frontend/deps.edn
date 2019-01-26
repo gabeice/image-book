@@ -6,7 +6,6 @@
              re-frame                          #:mvn{:version "0.10.5"}
              day8.re-frame/http-fx             #:mvn{:version "0.1.4"}
              http-kit                          #:mvn{:version "2.3.0"}
-             com.taoensso/sente                #:mvn{:version "1.11.0"}
              cljs-ajax                         {:mvn/version "0.7.3"
                                                 :exclusions  [com.fasterxml.jackson.core/jackson-core]}}
  :aliases

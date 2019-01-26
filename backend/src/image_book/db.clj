@@ -1,6 +1,7 @@
 (ns image-book.db
   (:require [datomic.client.api :as d]
-            [image-book.s3 :as s3]))
+            [image-book.s3 :as s3]
+            [image-book.util :as util]))
 
 (def cfg {:server-type :peer-server
           :access-key "myaccesskey"
@@ -29,9 +30,6 @@
 
 (d/transact conn {:tx-data photo-schema})
 
-(defn- url [bucket key]
-  (str "https://" bucket ".s3.amazonaws.com/" key))
-
 (defn all-photos []
   (let [db (d/db conn)
         query '[:find ?title ?bucket ?key
@@ -40,9 +38,9 @@
                         ?e :photo/key ?key]]
         [title bucket key] (d/q query db)]
     {:title title
-     :url (url bucket key)}))
+     :url (util/url bucket key)}))
 
-(defn add-photo [image-file]
+(defn save-photo [image-file]
   (let [uploaded-photo (s3/upload-photo image-file)
         photo-data [{:photo/title  (:title uploaded-photo)
                      :photo/bucket (:bucket uploaded-photo)
