@@ -10,16 +10,13 @@
     [compojure.core :refer [defroutes GET POST]]
     [compojure.route :as route]))
 
-(declare channel-socket)
-
 (defroutes routes
-  (GET "/" _ (response/content-type (json/write-str {:new-images (db/all-photos)}) "application/json"))
+  (GET "/" _ (response/content-type (response/response (json/write-str {:images []})) "application/json"))
   (mp/wrap-multipart-params
      (POST "/photo" {params :params}
-       (let [saved-photo (:tx-data (db/save-photo (get params "file")))]
+       (let [saved-photo (db/save-photo (:file params))]
          (response/content-type
-           (json/write-str {:new-images [{:title (:photo/title saved-photo)
-                                          :url (util/url (:photo/bucket saved-photo) (:photo/key saved-photo))}]})
+           (response/response (json/write-str {:new-image saved-photo}))
            "application/json"))))
   (route/not-found "Not found"))
 

@@ -26,24 +26,42 @@
                    {:db/ident :photo/etag
                     :db/valueType :db.type/string
                     :db/cardinality :db.cardinality/one
-                    :db/doc "The image file etag"}])
+                    :db/doc "The image file etag"}
+                   {:db/ident :photo/timestamp
+                    :db/valueType :db.type/instant
+                    :db/cardinality :db.cardinality/one
+                    :db/doc "The time the photo was added"}])
 
 (d/transact conn {:tx-data photo-schema})
 
 (defn all-photos []
   (let [db (d/db conn)
-        query '[:find ?title ?bucket ?key
-                :where [?e :photo/title ?title
-                        ?e :photo/bucket ?bucket
-                        ?e :photo/key ?key]]
-        [title bucket key] (d/q query db)]
-    {:title title
-     :url (util/url bucket key)}))
+        query '[:find ?title ?bucket ?key ?timestamp
+                :where [?e :photo/title ?title]
+                       [?e :photo/bucket ?bucket]
+                       [?e :photo/key ?key]
+                       [?e :photo/timestamp ?timestamp]]
+        photos (d/q query db)
+        photo-map (reduce
+                    (fn [coll el]
+                      (let [[title bucket key timestamp] el]
+                        (assoc coll timestamp {:title title
+                                               :bucket bucket
+                                               :key key})))
+                    {}
+                    photos)]
+    (into (sorted-map-by >) photo-map)))
 
 (defn save-photo [image-file]
   (let [uploaded-photo (s3/upload-photo image-file)
-        photo-data [{:photo/title  (:title uploaded-photo)
-                     :photo/bucket (:bucket uploaded-photo)
-                     :photo/key    (:key uploaded-photo)
-                     :photo/etag   (:etag uploaded-photo)}]]
-    (d/transact conn {:tx-data photo-data})))
+        {:keys [title bucket key etag timestamp]} uploaded-photo
+        photo-data [{:photo/title     title
+                     :photo/bucket    bucket
+                     :photo/key       key
+                     :photo/etag      etag
+                     :photo/timestamp timestamp}]]
+    (d/transact conn {:tx-data photo-data})
+    {:timestamp timestamp
+     :image {:title title
+             :url (util/url bucket key)}}))
+

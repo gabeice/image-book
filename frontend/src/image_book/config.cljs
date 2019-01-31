@@ -1,3 +1,3 @@
 (ns image-book.config)
 
-(def server "localhost:3000")
+(def server "http://localhost:3000")

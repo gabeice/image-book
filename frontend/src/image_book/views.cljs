@@ -10,7 +10,7 @@
         upload-file (fn [e]
                       (.preventDefault e)
                       (.stopPropagation e)
-                      #(dispatch [::events/upload-photo (-> e .-dataTransfer .-files (.item 0))]))]
+                      (dispatch [::events/upload-photo (-> e .-dataTransfer .-files (.item 0))]))]
     [:div#upload-box.flex-column {:on-drop       upload-file
                                   :on-drag       stop-drag-defaults
                                   :on-drag-enter stop-drag-defaults
@@ -39,9 +39,10 @@
   [:div#dividing-line])
 
 (defn image-thumbnail [image]
-  [:div.thumbnail {:key (:id image)}
-   [:img.event-link {:src (:url image)
-                     :on-click #(dispatch [::events/display-image image])}]])
+  (let [[id {url :url}] image]
+    [:div.thumbnail {:key id}
+     [:img.event-link {:src url
+                       :on-click #(dispatch [::events/display-image image])}]]))
 
 (defn image-gallery []
   (let [uploaded-images (subscribe [::subs/all-images])]

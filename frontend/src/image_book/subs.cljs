@@ -6,7 +6,7 @@
   ::displayed-image
   (fn [db]
     (or (:displayed-image db)
-        (first (:all-images db)))))
+        (first (vals (:all-images db))))))
 
 (reg-sub
   ::all-images
