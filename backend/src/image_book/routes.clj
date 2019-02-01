@@ -1,7 +1,6 @@
 (ns image-book.routes
   (:require
     [image-book.db :as db]
-    [image-book.util :as util]
     [clojure.data.json :as json]
     [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
     [ring.middleware.cors :as cors]
@@ -11,7 +10,7 @@
     [compojure.route :as route]))
 
 (defroutes routes
-  (GET "/" _ (response/content-type (response/response (json/write-str {:images []})) "application/json"))
+  (GET "/" _ (response/content-type (response/response (json/write-str {:images (db/all-photos)})) "application/json"))
   (mp/wrap-multipart-params
      (POST "/photo" {params :params}
        (let [saved-photo (db/save-photo (:file params))]

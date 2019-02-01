@@ -26,8 +26,7 @@
 (reg-event-db
   ::process-all-photos
   (fn [db [_ response-data]]
-    (assoc db :all-images (:images response-data))
-    db))
+    (assoc db :all-images (:images response-data))))
 
 (reg-event-db
   ::process-new-photo
@@ -42,7 +41,7 @@
 (reg-event-db
   ::display-image
   (fn [db [_ image]]
-    (assoc db :displayed-image image)))
+    (assoc db :displayed-image (second image))))
 
 (reg-event-db
   ::upload-view
@@ -57,13 +56,15 @@
 (reg-event-fx
   ::upload-photo
   (fn [cofx [_ image-file]]
-    (println image-file)
-    (-> cofx
-        (assoc-in [:db :uploading?] true)
-        (assoc :http-xhrio {:method           :post
-                            :uri              (str config/server "/photo")
-                            :multipart-params {:file image-file}
-                            :response-format  (ajax/json-response-format {:keywords? true})
-                            :timeout          30000
-                            :on-success       [::process-new-photo]
-                            :on-failure       [::process-failure]}))))
+    (let [form-data (js/FormData.)]
+      (.append form-data "file" image-file)
+      (-> cofx
+          (assoc-in [:db :uploading?] true)
+          (assoc :http-xhrio {:method           :post
+                              :uri              (str config/server "/photo")
+                              :params           form-data
+                              :format           {:write (ajax.util/to-utf8-writer identity)}
+                              :response-format  (ajax/json-response-format {:keywords? true})
+                              :timeout          30000
+                              :on-success       [::process-new-photo]
+                              :on-failure       [::process-failure]})))))

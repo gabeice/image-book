@@ -45,9 +45,8 @@
         photo-map (reduce
                     (fn [coll el]
                       (let [[title bucket key timestamp] el]
-                        (assoc coll timestamp {:title title
-                                               :bucket bucket
-                                               :key key})))
+                        (assoc coll (.getTime timestamp) {:title title
+                                                          :url (util/url bucket key)})))
                     {}
                     photos)]
     (into (sorted-map-by >) photo-map)))
@@ -61,7 +60,7 @@
                      :photo/etag      etag
                      :photo/timestamp timestamp}]]
     (d/transact conn {:tx-data photo-data})
-    {:timestamp timestamp
+    {:timestamp (.getTime timestamp)
      :image {:title title
              :url (util/url bucket key)}}))
 

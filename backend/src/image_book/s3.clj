@@ -1,7 +1,6 @@
 (ns image-book.s3
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [clj-time.core :as t]
             [amazonica.aws.s3 :as aws-s3]))
 
 (declare CONFIG-FILE)
@@ -30,4 +29,4 @@
      :key  key
      :bucket aws-bucket
      :title filename
-     :timestamp (t/now)}))
+     :timestamp (java.util.Date.)}))
