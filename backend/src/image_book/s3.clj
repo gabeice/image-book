@@ -16,10 +16,18 @@
            :access-key (:aws-access-key config)
            :secret-key (:aws-secret-key config)})
 
+(defn- random-triplet []
+  (str (.nextInt (java.util.Random.) 10)
+       (.nextInt (java.util.Random.) 10)
+       (.nextInt (java.util.Random.) 10)))
+
+(defn- build-key [filename]
+  (str "photos/" (random-triplet) "/" (random-triplet) "/" (random-triplet) "/" filename))
+
 (defn upload-photo [image-file]
   (let [{:keys [aws-bucket]} config
         {:keys [tempfile filename size content-type]} image-file
-        key (str "photos/" (java.util.UUID/randomUUID) "/" filename)
+        key (build-key filename)
         s3-data (aws-s3/put-object cred :bucket-name    aws-bucket
                                         :key            key
                                         :file           tempfile
