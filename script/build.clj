@@ -1,9 +1,8 @@
 ;adapted from http://www.functionalbytes.nl/clojure/nodejs/figwheel/repl/clojurescript/cli/2017/12/20/tools-deps-figwheel.html
 
-(require '[cljs.build.api :as api]
-         '[clojure.java.shell :as shell])
+(require '[cljs.build.api :as api])
 
-(def source-dir "src")
+(def source-dir "src/frontend")
 
 (def compiler-config {:main          'image-book.core
                       :output-to     "resources/public/js/compiled/app.js"
@@ -36,7 +35,7 @@
 
 (defmethod task "figwheel" [_]
   (with-namespaces [figwheel.main.api]
-                   (figwheel.main.api/start {:watch-dirs ["src"]}
+                   (figwheel.main.api/start {:watch-dirs ["src/frontend"]}
                                             {:id      "dev"
                                              :options {:main                 'image-book.core
                                                        :output-to            "resources/public/js/compiled/app.js"

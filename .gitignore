@@ -11,10 +11,11 @@ pom.xml.asc
 .hg/
 /*.log
 /*-init.clj
-frontend/resources/public/js/compiled
+resources/public/js/compiled
 *.idea/
 *.cpcache/
-frontend/out
-frontend/.rebel_readline_history
+out
+.rebel_readline_history
 /*.iml
-backend/config/config.edn
+config/config.edn
+.DS_Store
