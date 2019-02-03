@@ -8,4 +8,4 @@ compile:
 	clojure script/build.clj compile
 
 figwheel:
-	clojure -Adev script/build.clj figwheel
+	clojure -Afrontend script/build.clj figwheel

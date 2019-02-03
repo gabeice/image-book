@@ -18,9 +18,9 @@
                                    ring/ring-defaults                #:mvn{:version "0.2.0"}
                                    ring-cors                         #:mvn{:version "0.1.7"}}}
 
-             :dev {:extra-deps {com.bhauman/rebel-readline-cljs {:mvn/version "0.1.4"}
-                                binaryage/devtools              {:mvn/version "0.9.10"}
-                                com.bhauman/figwheel-main       {:git/url "https://github.com/bhauman/figwheel-main.git"
-                                                                 :sha "50853cfab10efd4e738ecc26c082c8ba407b18c5"}}}
+             :frontend {:extra-deps {com.bhauman/rebel-readline-cljs {:mvn/version "0.1.4"}
+                                     binaryage/devtools              {:mvn/version "0.9.10"}
+                                     com.bhauman/figwheel-main       {:git/url "https://github.com/bhauman/figwheel-main.git"
+                                                                      :sha "50853cfab10efd4e738ecc26c082c8ba407b18c5"}}}
 
              :figwheel {:main-opts ["script/build.clj" "figwheel"]}}}
