@@ -1,5 +1,5 @@
 run:
-	clj -m image-book.server
+	clj -Aserver -m image-book.server
 
 clean:
 	rm -rf resources/public/js
