@@ -1,4 +1,4 @@
-# snail-fruit
+# The Image Book
 
 An image uploading app with a [re-frame](https://github.com/Day8/re-frame) frontend and a datomic backend.
 
