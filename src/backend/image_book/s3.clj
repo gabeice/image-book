@@ -1,20 +1,10 @@
 (ns image-book.s3
-  (:require [clojure.edn :as edn]
-            [clojure.java.io :as io]
+  (:require [image-book.config :refer [s3-config]]
             [amazonica.aws.s3 :as aws-s3]))
 
-(declare CONFIG-FILE)
-(defonce CONFIG-FILE "config.edn")
-
-(def config
-  (-> CONFIG-FILE
-      io/resource
-      slurp
-      edn/read-string))
-
-(def cred {:endpoint (:aws-region config)
-           :access-key (:aws-access-key config)
-           :secret-key (:aws-secret-key config)})
+(def cred {:endpoint (:aws-region s3-config)
+           :access-key (:aws-access-key s3-config)
+           :secret-key (:aws-secret-key s3-config)})
 
 (defn- random-triplet []
   (str (.nextInt (java.util.Random.) 10)
@@ -25,7 +15,7 @@
   (str "photos/" (random-triplet) "/" (random-triplet) "/" (random-triplet) "/" filename))
 
 (defn upload-photo [image-file]
-  (let [{:keys [aws-bucket]} config
+  (let [{:keys [aws-bucket]} s3-config
         {:keys [tempfile filename size content-type]} image-file
         key (build-key filename)
         s3-data (aws-s3/put-object cred :bucket-name    aws-bucket

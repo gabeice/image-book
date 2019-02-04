@@ -1,14 +1,10 @@
 (ns image-book.db
   (:require [datomic.client.api :as d]
             [image-book.s3 :as s3]
+            [image-book.config :refer [db-config]]
             [image-book.util :as util]))
 
-(def cfg {:server-type :peer-server
-          :access-key "myaccesskey"
-          :secret "mysecret"
-          :endpoint "localhost:8998"})
-
-(def client (d/client cfg))
+(def client (d/client db-config))
 (def conn (d/connect client {:db-name "image-book"}))
 
 (def photo-schema [{:db/ident :photo/title
