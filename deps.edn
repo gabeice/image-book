@@ -18,6 +18,7 @@
              :frontend {:extra-paths ["src/frontend"]
                         :extra-deps {re-frame                        #:mvn{:version "0.10.5"}
                                      day8.re-frame/http-fx           #:mvn{:version "0.1.4"}
+                                     com.cognitect/transit-cljs      #:mvn{:version "0.8.256"}
                                      com.bhauman/rebel-readline-cljs #:mvn{:version "0.1.4"}
                                      binaryage/devtools              #:mvn{:version "0.9.10"}
                                      com.bhauman/figwheel-main       {:git/url "https://github.com/bhauman/figwheel-main.git"
